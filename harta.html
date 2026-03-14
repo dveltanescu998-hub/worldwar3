@@ -2,35 +2,31 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <title>World War 3 - Harta de Luptă</title>
+    <title>World War 3 - Map</title>
     <style>
         body { margin: 0; overflow: hidden; background-color: #000; }
         #game-container {
             width: 100vw;
             height: 100vh;
-            background-image: url('assets/harta_principala.jpg'); /* Aici punem arta hărții */
-            background-size: cover;
-            background-position: center;
+            background-image: url('assets/map.jpg');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
             position: relative;
         }
-        #ui-overlay {
+        #ui-text {
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 10px;
+            left: 10px;
             color: #0f0;
-            font-family: 'Courier New', monospace;
-            background: rgba(0, 20, 0, 0.7);
-            padding: 10px;
-            border: 1px solid #0f0;
+            font-family: monospace;
+            background: rgba(0,0,0,0.5);
+            padding: 5px;
         }
     </style>
 </head>
 <body>
     <div id="game-container">
-        <div id="ui-overlay">
-            SISTEM ACTIV: SEZON 1<br>
-            MISIUNE: RECONSTRUCȚIA GLOBALĂ
-        </div>
+        <div id="ui-text">SISTEM ACTIV: SEZON 1</div>
     </div>
 </body>
 </html>
