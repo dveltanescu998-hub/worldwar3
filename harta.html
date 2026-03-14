@@ -1,1 +1,36 @@
-
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>World War 3 - Harta de Luptă</title>
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        #game-container {
+            width: 100vw;
+            height: 100vh;
+            background-image: url('assets/harta_principala.jpg'); /* Aici punem arta hărții */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        #ui-overlay {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 20, 0, 0.7);
+            padding: 10px;
+            border: 1px solid #0f0;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="ui-overlay">
+            SISTEM ACTIV: SEZON 1<br>
+            MISIUNE: RECONSTRUCȚIA GLOBALĂ
+        </div>
+    </div>
+</body>
+</html>
