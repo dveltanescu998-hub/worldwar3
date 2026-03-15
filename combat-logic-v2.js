@@ -4,36 +4,30 @@
  */
 
 const COMBAT_DATABASE = {
-    // Coeficienți de eficiență calculați
-    EFFICIENCY_WW3: 0.90,     // Unitățile tale (Submarine, Portavioane)
-    EFFICIENCY_LEGACY: 0.55,  // Jocurile tip DarkOrbit/Standard
+    EFFICIENCY_WW3: 0.90,     
+    EFFICIENCY_LEGACY: 0.55,  
     
-    // Configurații Facțiuni
     FACTIONS: {
         ZENITH: {
-            precision: 0.95,      // Bonus de tehnologie: Lovituri aproape perfecte
-            bit_modifier: 1.2,    // Bonus la generarea de Biți
+            precision: 0.95,      
+            bit_modifier: 1.2,    
             special: "Orbital Strike"
         },
         KHAOS: {
-            precision: 0.75,      // Mai puțin precis, dar...
-            damage_multiplier: 1.4, // ...lovitură mult mai puternică (Brutal Damage)
+            precision: 0.75,      
+            damage_multiplier: 1.4, 
             special: "Splash Damage"
         }
     }
 };
 
-// --- UNITĂȚI DE ELITĂ ---
 const UNIT_STATS = {
     SUBMARIN_NUC: { hp: 600, atk: 150, range: "Global", stealth: true },
     PORTAVION_A:  { hp: 1500, atk: 100, drones: 12, shield: 200 },
     TANC_LEVIATHAN: { hp: 1000, atk: 250, armor: 0.8 }
 };
 
-/**
- * FUNCȚIE DE CALCUL DAMAGE PRECIS (%)
- */
-function calculateFinalStrike(unitType, factionName, isTargetWW3 = false) {
+function calculateFinalStrike(unitType, factionName) {
     const unit = UNIT_STATS[unitType];
     const faction = COMBAT_DATABASE.FACTIONS[factionName];
     
@@ -43,10 +37,8 @@ function calculateFinalStrike(unitType, factionName, isTargetWW3 = false) {
     // 2. Aplicăm modificatorul de facțiune
     let finalDamage;
     if (factionName === 'ZENITH') {
-        // Logica BIT: Precizie extremă
         finalDamage = basePower * faction.precision;
     } else {
-        // Logica KHAOS: Forță Brută
         finalDamage = (basePower * faction.precision) * faction.damage_multiplier;
     }
 
@@ -54,6 +46,7 @@ function calculateFinalStrike(unitType, factionName, isTargetWW3 = false) {
     let legacyDmg = unit.atk * COMBAT_DATABASE.EFFICIENCY_LEGACY;
     let advantage = ((finalDamage / legacyDmg - 1) * 100).toFixed(1);
 
+    // AFIȘARE REZULTATE (Fără semne de exclamare)
     console.log(--- RAPORT DE LUPTĂ [${factionName}] ---);
     console.log(Unitate: ${unitType});
     console.log(Damage Generat: ${finalDamage.toFixed(2)});
@@ -65,18 +58,16 @@ function calculateFinalStrike(unitType, factionName, isTargetWW3 = false) {
     };
 }
 
-/**
- * SISTEMUL DE BITS PENTRU LOVITURA ORBITALĂ
- */
 function checkOrbitalReady(currentBits) {
     const threshold = 1000;
     if (currentBits >= threshold) {
-        // Execută animația din efecte-vizuale.css
-        triggerOrbitalVisuals(); 
+        if (typeof triggerOrbitalVisuals === "function") {
+            triggerOrbitalVisuals(); 
+        }
         return { power: 5000, precision: "100%", status: "DEVASTATING" };
     }
     return { status: "CHARGING", remaining: threshold - currentBits };
 }
 
-// Exemplu de rulare automată pentru analiză
+// Simularea bătăliei inițiale
 const sim = calculateFinalStrike('TANC_LEVIATHAN', 'KHAOS');
