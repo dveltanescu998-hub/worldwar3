@@ -1,1 +1,31 @@
-
+{
+  "project": "World War 3 - Season 1",
+  "global_metrics": {
+    "hp_regen_rate": 0.15,
+    "shield_efficiency": 0.90
+  },
+  "misiuni_active": [
+    {
+      "id": "mission_01",
+      "nume": "Recuperare Tehnologică Australia",
+      "cerinte": { "nivel": 1, "energie_cost": 20 },
+      "recompense": {
+        "hp_unitati": 100,
+        "scut_bits": 50,
+        "energie_bonus": 10
+      },
+      "descriere": "Sincronizează sateliții pentru a activa scuturile de protecție asupra minelor de Uraniu."
+    },
+    {
+      "id": "mission_02",
+      "nume": "Patrula de Coastă (Submarin)",
+      "cerinte": { "unitate": "SUBMARIN_NUC", "timp": "5m" },
+      "recompense": {
+        "hp_unitati": 250,
+        "scut_bits": 0,
+        "deblocare_radar": true
+      },
+      "descriere": "Folosește stealth-ul submarinului pentru a livra kit-uri de reparații bazelor izolate."
+    }
+  ]
+}
