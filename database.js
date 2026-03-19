@@ -14,37 +14,57 @@ const firebaseConfig = {
 // ==========================================
 // 2. INIȚIALIZARE SERVER
 // ==========================================
-if (!firebase.apps.length) {
+if (typeof firebase !== 'undefined' && !firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
-const database = firebase.database();
+const db = firebase.database();
 
 // ==========================================
-// 3. LOGICA DE MEMORARE ȘI ACTUALIZARE DATE
+// 3. LOGICA DE SECURITATE (ANTI-CRONUS)
 // ==========================================
-function salveazaSiLogheaza(idRecrut, parolaRecrut) {
-    // Generăm un email automat bazat pe ID pentru baza de date
-    // (Jucătorul îl poate actualiza ulterior în setări)
-    const emailCreat = idRecrut.toLowerCase() + "@inteligens-world.ro";
-
-    // Salvăm în serverul Realtime Database sub folderul 'jucatori_inregistrati'
-    return database.ref('jucatori_inregistrati/' + idRecrut).set({
-        nume_utilizator: idRecrut,
-        parola_acces: parolaRecrut,       // Memorează parola pe server
-        email_asociat: emailCreat,        // Actualizează datele de email
-        data_creare: new Date().toLocaleString(),
-        status_cont: "ACTIV",
-        nivel_acces: "AMIRAL"
+/**
+ * Înregistrează o încălcare a regulamentului direct pe server
+ */
+function logSecurityViolation(idRecrut, motiv, facțiune) {
+    const timestamp = new Date().toLocaleString();
+    
+    // Actualizăm statusul jucătorului pe server la "SUSPENDAT"
+    return db.ref('jucatori_inregistrati/' + idRecrut).update({
+        status_cont: "SUSPENDAT_CRONUS",
+        motiv_ban: motiv,
+        data_banare: timestamp,
+        ultima_factiune: facțiune
     })
     .then(() => {
-        // Memorează datele local pentru a fi recunoscut pe harta.html
+        console.error([SECURITATE] Jucătorul ${idRecrut} a fost BANAT pentru: ${motiv});
+        localStorage.setItem('status_cont', 'SUSPENDAT');
+        alert("SISTEMUL INTELIGENS A DETECTAT HARDWARE NEAUTORIZAT. CONT SUSPENDAT!");
+        window.location.href = 'index.html'; // Îl dă afară din joc
+    });
+}
+
+// ==========================================
+// 4. LOGICA DE MEMORARE ȘI ACTUALIZARE DATE
+// ==========================================
+function salveazaSiLogheaza(idRecrut, parolaRecrut) {
+    const emailCreat = idRecrut.toLowerCase() + "@inteligens-world.ro";
+
+    return db.ref('jucatori_inregistrati/' + idRecrut).set({
+        nume_utilizator: idRecrut,
+        parola_acces: parolaRecrut,       
+        email_asociat: emailCreat,        
+        data_creare: new Date().toLocaleString(),
+        status_cont: "ACTIV",
+        nivel_acces: "AMIRAL",
+        scor_integritate: 100 // Nou: Scade dacă sistemul detectează anomalii
+    })
+    .then(() => {
         localStorage.setItem('nume_comandant', idRecrut);
         localStorage.setItem('parola_comandant', parolaRecrut);
         localStorage.setItem('email_comandant', emailCreat);
 
-        console.log("Datele pentru " + idRecrut + " au fost memorate și sincronizate.");
+        console.log(Datele pentru ${idRecrut} au fost sincronizate cu succes.);
         
-        // Trimite utilizatorul la Harta Operativă
         alert("INTELIGENS: DATE MEMORATE PE SERVER. ACCES CONFIRMAT!");
         window.location.href = 'harta.html';
     })
@@ -55,6 +75,6 @@ function salveazaSiLogheaza(idRecrut, parolaRecrut) {
 }
 
 // ==========================================
-// 4. MESAJE DE CONTROL SISTEM
+// 5. MESAJE DE CONTROL SISTEM
 // ==========================================
-console.log("Sistemul INTELIGENS Database: OPERAȚIONAL 100%");
+console.log("Sistemul INTELIGENS Database & Security: OPERAȚIONAL 100%");
